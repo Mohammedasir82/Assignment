@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Course Registration System</title>
+  <style>
+    body { font-family: Arial; background: #f4f4f9; padding: 20px; }
+    h2 { color: #333; }
+    .course { border: 1px solid #ccc; padding: 15px; margin: 10px; border-radius: 8px; }
+    button { padding: 8px 15px; border: none; border-radius: 5px; background: #007bff; color: #fff; }
+    button:disabled { background: gray; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <h2>Course Registration</h2>
+  <div id="courses"></div>
+
+  <script>
+    let courses = [
+      { id: 1, name: "AI Fundamentals", seats: 2, prereq: null },
+      { id: 2, name: "Machine Learning", seats: 1, prereq: "AI Fundamentals" },
+      { id: 3, name: "Deep Learning", seats: 1, prereq: "Machine Learning" }
+    ];
+
+    let registered = [];
+
+    function renderCourses() {
+      let div = document.getElementById("courses");
+      div.innerHTML = "";
+      courses.forEach(c => {
+        let prereqText = c.prereq ? `(Prerequisite: ${c.prereq})` : "No Prerequisite";
+        div.innerHTML += `
+          <div class="course">
+            <h3>${c.name}</h3>
+            <p>Seats Available: ${c.seats} <br> ${prereqText}</p>
+            <button onclick="registerCourse('${c.name}')" ${c.seats<=0 ? "disabled" : ""}>Register</button>
+          </div>`;
+      });
+    }
+
+    function registerCourse(courseName) {
+      let course = courses.find(c => c.name === courseName);
+
+      if(course.prereq && !registered.includes(course.prereq)){
+        alert("You must complete " + course.prereq + " first!");
+        return;
+      }
+
+      if(course.seats > 0){
+        course.seats--;
+        registered.push(course.name);
+        alert("Registered for " + course.name);
+      }
+      renderCourses();
+    }
+    renderCourses();
+  </script>
+</body>
+</html>

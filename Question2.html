@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Number Validation</title>
+</head>
+<body>
+  <h2>Enter a 4-digit Number</h2>
+  <input type="text" id="num" maxlength="4">
+  <button onclick="validate()">Validate</button>
+  <p id="result"></p>
+
+  <script>
+    function validate(){
+      let num = document.getElementById("num").value;
+      let result = document.getElementById("result");
+
+      if(!/^\d{4}$/.test(num)){
+        result.innerHTML = "❌ Enter exactly 4 digits.";
+        return;
+      }
+
+      if(num[0] === "0"){
+        result.innerHTML = "❌ First digit cannot be 0.";
+        return;
+      }
+
+      let isAscending = true;
+      for(let i=0; i<3; i++){
+        if(num[i] >= num[i+1]){
+          isAscending = false;
+          break;
+        }
+      }
+
+      if(isAscending){
+        result.innerHTML = "✅ Valid Number!";
+      } else {
+        result.innerHTML = "❌ Digits must be in ascending order.";
+      }
+    }
+  </script>
+</body>
+</html>
